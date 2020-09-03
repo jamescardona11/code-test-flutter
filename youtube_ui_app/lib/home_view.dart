@@ -6,19 +6,154 @@ const kLoadingImage = 'assets/circular_loading.gif';
 class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Center(
-        child: _ItemList(),
+        child: _ItemList(GeneratorText.getRandom()),
+      ),
+      bottomNavigationBar: _MyBottomNavigationBar(),
+    );
+  }
+}
+
+class _MyBottomNavigationBar extends StatefulWidget {
+  @override
+  __MyBottomNavigationBarState createState() => __MyBottomNavigationBarState();
+}
+
+class __MyBottomNavigationBarState extends State<_MyBottomNavigationBar> {
+  int selectIndex = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Container(
+      width: size.width,
+      height: 60,
+      decoration: BoxDecoration(color: Colors.white, boxShadow: [
+        BoxShadow(
+          color: Colors.black,
+          blurRadius: 1,
+          spreadRadius: -1,
+        )
+      ]),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _ItemBottomBar(
+            icon: Icons.home,
+            label: 'Home',
+            index: 1,
+            selected: selectIndex == 1,
+            onTap: onTap,
+          ),
+          _ItemBottomBar(
+            icon: Icons.explore,
+            label: 'Explore',
+            index: 2,
+            selected: selectIndex == 2,
+            onTap: onTap,
+          ),
+          _ItemBottomBar(
+            icon: Icons.subscriptions,
+            label: 'Subscriptions',
+            index: 3,
+            selected: selectIndex == 3,
+            onTap: onTap,
+          ),
+          _ItemBottomBar(
+            icon: Icons.notifications,
+            label: 'Notifications',
+            index: 4,
+            selected: selectIndex == 4,
+            onTap: onTap,
+          ),
+          _ItemBottomBar(
+            icon: Icons.play_circle_filled,
+            label: 'Library',
+            index: 5,
+            selected: selectIndex == 5,
+            onTap: onTap,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void onTap(int index) {
+    selectIndex = index;
+    setState(() {});
+  }
+}
+
+class _ItemBottomBar extends StatelessWidget {
+  final IconData icon;
+
+  final String label;
+
+  final bool selected;
+  final int index;
+  final Function(int) onTap;
+
+  _ItemBottomBar({
+    this.icon,
+    this.label,
+    this.selected = false,
+    this.index,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onTap(index),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: selected ? Colors.red[800] : Colors.grey[700]),
+          Text(
+            label,
+            style: TextStyle(fontSize: 12, color: selected ? Colors.red[800] : Colors.grey[700]),
+          ),
+        ],
       ),
     );
   }
 }
 
+/*BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.explore),
+            label: 'Explore',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.subscriptions),
+            label: 'Subscriptions',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Notifications',
+          ),
+        ],
+        currentIndex: 0,
+        selectedItemColor: Colors.red[700],
+        onTap: (index) {},
+      )*/
+
 class _ItemList extends StatelessWidget {
+  final InfoVideo infoVideo;
+
+  _ItemList(this.infoVideo);
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final infoVideo = GeneratorText.getRandom();
+
     return Container(
       width: size.width,
       height: size.height * 0.45,
