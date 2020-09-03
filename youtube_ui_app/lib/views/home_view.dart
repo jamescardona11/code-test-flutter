@@ -8,8 +8,11 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Center(
-        child: _ItemList(GeneratorText.getRandom()),
+      body: ListView.builder(
+        itemCount: 20,
+        itemBuilder: (context, index) {
+          return _ItemList(GeneratorText.getRandom(), index);
+        },
       ),
     );
   }
@@ -17,8 +20,9 @@ class HomeView extends StatelessWidget {
 
 class _ItemList extends StatelessWidget {
   final InfoVideo infoVideo;
+  final int index;
 
-  _ItemList(this.infoVideo);
+  _ItemList(this.infoVideo, this.index);
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +36,9 @@ class _ItemList extends StatelessWidget {
         children: [
           Flexible(
             child: Container(
-              color: Colors.green,
               child: FadeInImage(
                 placeholder: AssetImage(kLoadingImage),
-                image: NetworkImage('https://picsum.photos/500/300'),
+                image: NetworkImage('https://picsum.photos/500/300?index=${index + 1}'),
               ),
               width: size.width,
             ),
