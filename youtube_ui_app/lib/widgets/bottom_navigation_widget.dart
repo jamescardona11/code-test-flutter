@@ -22,27 +22,27 @@ class MyBottomNavigationBar extends StatelessWidget {
           _ItemBottomBar(
             icon: Icons.home,
             label: 'Home',
-            index: 1,
+            index: 0,
           ),
           _ItemBottomBar(
             icon: Icons.explore,
             label: 'Explore',
-            index: 2,
+            index: 1,
           ),
           _ItemBottomBar(
             icon: Icons.subscriptions,
             label: 'Subscriptions',
-            index: 3,
+            index: 2,
           ),
           _ItemBottomBar(
             icon: Icons.notifications,
             label: 'Notifications',
-            index: 4,
+            index: 3,
           ),
           _ItemBottomBar(
             icon: Icons.play_circle_filled,
             label: 'Library',
-            index: 5,
+            index: 4,
           ),
         ],
       ),
