@@ -9,7 +9,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
       home: Scaffold(
-        backgroundColor: Colors.amber,
         body: HomeView(),
       ),
     );
