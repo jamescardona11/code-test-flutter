@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 
 class MyCustomPainter extends CustomPainter {
   final List<Offset> points;
+  final bool complete;
 
   MyCustomPainter(
     this.points,
+    this.complete,
   );
 
   @override
@@ -16,6 +18,10 @@ class MyCustomPainter extends CustomPainter {
       if (x + 1 <= points.length - 1) {
         canvas.drawLine(points[x], points[x + 1], getCurrentPaint(false));
       }
+    }
+
+    if (complete) {
+      canvas.drawLine(points[0], points[points.length - 1], getCurrentPaint(false));
     }
   }
 

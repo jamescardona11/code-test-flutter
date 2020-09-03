@@ -2,7 +2,15 @@ import 'package:draw_polygon_app/consts.dart';
 import 'package:draw_polygon_app/my_custom_painter.dart';
 import 'package:flutter/material.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  bool clearArea = false;
+  bool complete = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,18 +18,43 @@ class HomeView extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _PaintArea(),
+          _PaintArea(
+            clearArea: clearArea,
+            completePolygon: complete,
+          ),
           SizedBox(height: 10),
-          _FloatingActions(),
+          _FloatingActions(
+            clearCanvas: clearCanvas,
+            completePolygon: completePolygon,
+          ),
         ],
       ),
     );
   }
+
+  void clearCanvas() {
+    setState(() {
+      clearArea = true;
+      complete = false;
+    });
+  }
+
+  void completePolygon() {
+    setState(() {
+      complete = true;
+      clearArea = false;
+    });
+  }
 }
 
 class _FloatingActions extends StatelessWidget {
+  final VoidCallback clearCanvas;
+  final VoidCallback completePolygon;
 
-
+  const _FloatingActions({
+    this.clearCanvas,
+    this.completePolygon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +62,7 @@ class _FloatingActions extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         RawMaterialButton(
-          onPressed: () {},
+          onPressed: completePolygon,
           constraints: BoxConstraints(),
           elevation: 2.0,
           fillColor: Colors.white,
@@ -43,7 +76,7 @@ class _FloatingActions extends StatelessWidget {
         ),
         SizedBox(width: 20),
         RawMaterialButton(
-          onPressed: () {},
+          onPressed: clearCanvas,
           constraints: BoxConstraints(),
           elevation: 2.0,
           fillColor: Colors.white,
@@ -61,6 +94,14 @@ class _FloatingActions extends StatelessWidget {
 }
 
 class _PaintArea extends StatefulWidget {
+  final bool clearArea;
+  final bool completePolygon;
+
+  _PaintArea({
+    this.clearArea = false,
+    this.completePolygon = false,
+  });
+
   @override
   _PaintAreaState createState() => _PaintAreaState();
 }
@@ -71,24 +112,42 @@ class _PaintAreaState extends State<_PaintArea> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    /*if (widget.clearArea) {
+    if (widget.clearArea) {
       points.value = [];
-    }*/
+    }
     return Center(
       child: Container(
         width: size.width * 0.8,
         height: size.height * 0.8,
         decoration: kDecoration,
-        child: GestureDetector(
-          onPanDown: (details) {
-            addPoint(details.localPosition);
-          },
-          child: ValueListenableBuilder(
-            valueListenable: points,
-            builder: (context, value, child) => CustomPaint(
-              painter: MyCustomPainter(value),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            GestureDetector(
+              onPanDown: (details) {
+                if (!widget.completePolygon) {
+                  addPoint(details.localPosition);
+                }
+              },
+              child: ValueListenableBuilder(
+                valueListenable: points,
+                builder: (context, value, child) => CustomPaint(
+                  painter: MyCustomPainter(value, widget.completePolygon),
+                ),
+              ),
             ),
-          ),
+            if (widget.completePolygon)
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'CLEAR AREA',
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );
