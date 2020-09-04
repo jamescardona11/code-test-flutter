@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_ui_app/provider/navigation_provider.dart';
+import 'package:youtube_ui_app/widgets/bottom_navigation_widget.dart';
 
 import 'home_view.dart';
 import 'other_view.dart';
@@ -31,6 +32,7 @@ class _ViewPageParentViewState extends State<ViewPageParentView> {
         ],
         controller: Provider.of<NavigationProvider>(context, listen: false).controller,
       ),
+      bottomNavigationBar: MyBottomNavigationBar(),
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'dart:math';
 
+const kLoadingImage = 'assets/circular_loading.gif';
+
 class GeneratorText {
-  static InfoVideo getRandom() => mapGenerator[Random().nextInt(mapGenerator.length)];
+  static InfoVideo getRandomItem() => mapGenerator[Random().nextInt(mapGenerator.length)];
 
   static final mapGenerator = [
     InfoVideo('Luisito Comunica', 'Así es el castillo de dracula', '1.6M', '1 year ago', '12:05'),
