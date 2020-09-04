@@ -153,12 +153,15 @@ class _ImageVideo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
-      child: FadeInImage(
-        placeholder: AssetImage(kLoadingImage),
-        image: NetworkImage('https://picsum.photos/500/300?index=${index + 1}'),
+    return Hero(
+      tag: 'index$index',
+      child: Container(
+        child: FadeInImage(
+          placeholder: AssetImage(kLoadingImage),
+          image: NetworkImage('https://picsum.photos/500/300?index=${index + 1}'),
+        ),
+        width: size.width,
       ),
-      width: size.width,
     );
   }
 }

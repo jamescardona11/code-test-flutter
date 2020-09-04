@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_ui_app/constants.dart';
+import 'package:youtube_ui_app/views/details_video_view.dart';
 
 class ItemList extends StatelessWidget {
   final InfoVideo infoVideo;
@@ -11,52 +12,64 @@ class ItemList extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return Container(
-      width: size.width,
-      height: size.height * 0.45,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Flexible(
-            child: Container(
-              child: FadeInImage(
-                placeholder: AssetImage(kLoadingImage),
-                image: NetworkImage('https://picsum.photos/500/300?index=${index + 1}'),
-              ),
-              width: size.width,
-            ),
-            flex: 3,
-          ),
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  ImageProfile(),
-                  SizedBox(width: 15),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        infoVideo.nameVideo,
-                        style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        infoVideo.concatValues,
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      ),
-                    ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailVideoView(infoVideo, index),
+            ));
+      },
+      child: Container(
+        width: size.width,
+        height: size.height * 0.45,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Flexible(
+              child: Hero(
+                tag: 'index$index',
+                child: Container(
+                  child: FadeInImage(
+                    placeholder: AssetImage(kLoadingImage),
+                    image: NetworkImage('https://picsum.photos/500/300?index=${index + 1}'),
                   ),
-                  Expanded(child: SizedBox()),
-                  Icon(Icons.more_vert)
-                ],
+                  width: size.width,
+                ),
               ),
+              flex: 3,
             ),
-            flex: 1,
-          )
-        ],
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    ImageProfile(),
+                    SizedBox(width: 15),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          infoVideo.nameVideo,
+                          style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          infoVideo.concatValues,
+                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                        ),
+                      ],
+                    ),
+                    Expanded(child: SizedBox()),
+                    Icon(Icons.more_vert)
+                  ],
+                ),
+              ),
+              flex: 1,
+            )
+          ],
+        ),
       ),
     );
   }

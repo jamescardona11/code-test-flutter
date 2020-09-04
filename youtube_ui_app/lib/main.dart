@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       home: ChangeNotifierProvider(
         create: (_) => NavigationProvider(),
         child: Scaffold(
-          body: DetailVideoView(GeneratorText.getRandomItem(), 1),
+          body: ViewPageParentView(),
         ),
       ),
     );
