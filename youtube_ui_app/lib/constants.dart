@@ -1,6 +1,19 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
+
 const kLoadingImage = 'assets/circular_loading.gif';
+
+const kDecorationDetail = BoxDecoration(
+  color: Colors.white,
+  boxShadow: [
+    BoxShadow(
+      color: Colors.black,
+      spreadRadius: -4,
+      blurRadius: 4,
+    )
+  ],
+);
 
 class GeneratorText {
   static InfoVideo getRandomItem() => mapGenerator[Random().nextInt(mapGenerator.length)];

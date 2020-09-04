@@ -14,30 +14,71 @@ class DetailVideoView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
+      body: Container(
+        width: size.width,
+        height: size.height,
+        decoration: kDecorationDetail,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _ImageVideo(index: index),
+            _InfoVideo(infoVideo: infoVideo),
+            _ActionBar(),
+            _SubscribeBar(infoVideo: infoVideo),
+            SizedBox(height: 50),
+            Center(
+              child: Text('loading comments...'),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SubscribeBar extends StatelessWidget {
+  const _SubscribeBar({
+    Key key,
+    @required this.infoVideo,
+  }) : super(key: key);
+
+  final InfoVideo infoVideo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12.0),
+      decoration: kDecorationDetail,
+      child: Row(
         children: [
-          Container(
-            width: size.width,
-            height: size.height * 0.55,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black,
-                  spreadRadius: -4,
-                  blurRadius: 4,
-                )
-              ],
+          ImageProfile(),
+          SizedBox(width: 10),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                infoVideo.nameVideo,
+                textAlign: TextAlign.start,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 5),
+              Text(
+                infoVideo.concatValues,
+                style: TextStyle(color: Colors.grey, fontSize: 14),
+              ),
+            ],
+          ),
+          Expanded(child: SizedBox()),
+          Text(
+            'SUBSCRIBE',
+            style: TextStyle(
+              fontSize: 15,
+              color: Colors.red[800],
+              fontWeight: FontWeight.bold,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _ImageVideo(index: index),
-                _InfoVideo(infoVideo: infoVideo),
-                _ActionBar(),
-              ],
-            ),
-          )
+          ),
         ],
       ),
     );
@@ -51,8 +92,8 @@ class _ActionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 1,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -77,28 +118,26 @@ class _InfoVideo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            SizedBox(width: 15),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  infoVideo.nameVideo,
-                  style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 5),
-                Text(infoVideo.concatValues, style: TextStyle(color: Colors.grey, fontSize: 14)),
-              ],
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(width: 15),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                infoVideo.nameVideo,
+                style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 5),
+              Text(infoVideo.concatValues, style: TextStyle(color: Colors.grey, fontSize: 14)),
+            ],
+          ),
+        ],
       ),
-      flex: 2,
     );
   }
 }
@@ -114,15 +153,12 @@ class _ImageVideo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Flexible(
-      child: Container(
-        child: FadeInImage(
-          placeholder: AssetImage(kLoadingImage),
-          image: NetworkImage('https://picsum.photos/500/300?index=${index + 1}'),
-        ),
-        width: size.width,
+    return Container(
+      child: FadeInImage(
+        placeholder: AssetImage(kLoadingImage),
+        image: NetworkImage('https://picsum.photos/500/300?index=${index + 1}'),
       ),
-      flex: 6,
+      width: size.width,
     );
   }
 }
