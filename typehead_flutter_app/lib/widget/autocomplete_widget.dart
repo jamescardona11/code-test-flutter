@@ -113,14 +113,11 @@ class AutoCompleteState extends State<AutoComplete> {
                               child: InkWell(
                                 child: Padding(padding: EdgeInsets.all(8.0), child: Text(suggestion)),
                                 onTap: () {
-                                  setState(() {
-                                    String text = suggestion.toString();
-                                    controller.text = text;
-                                    focusNode.unfocus();
-                                    widget.textSubmitted(suggestion);
-
-                                    clear();
-                                  });
+                                  String text = suggestion.toString();
+                                  controller.text = text;
+                                  //focusNode.unfocus();
+                                  widget.textSubmitted(suggestion);
+                                  clear();
                                 },
                               ),
                             ),

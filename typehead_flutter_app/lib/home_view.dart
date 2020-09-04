@@ -8,43 +8,45 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  List<String> added = [];
-  String currentText = "";
-  GlobalKey<AutoCompleteState> key = GlobalKey();
-  _HomeViewState() {
-    textField = AutoComplete(
-      key: key,
-      suggestions: suggestions,
-      textChanged: (text) => currentText = text,
-      textSubmitted: (text) => setState(() {
-        if (text != "") {
-          added.add(text);
-        }
-      }),
-    );
-  }
-
-  AutoComplete textField;
-  bool showWhichErrorText = false;
+  final selectedList = ValueNotifier<List<String>>([]);
+  GlobalKey<AutoCompleteState> key = new GlobalKey();
+  String currentText = '';
 
   @override
   Widget build(BuildContext context) {
-    Column body = Column(
-      children: [
-        ListTile(
-          title: textField,
-        ),
-      ],
-    );
-
-    body.children.addAll(added.map((item) {
-      return ListTile(title: Text(item));
-    }));
-
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
-        child: body,
+        child: Column(
+          children: [
+            ListTile(
+              title: AutoComplete(
+                key: key,
+                suggestions: suggestions,
+                textChanged: (text) => currentText = text,
+                textSubmitted: (text) {
+                  if (text != '') {
+                    selectedList.value = List<String>.from(selectedList.value)..add(text);
+                  }
+                },
+              ),
+            ),
+            Container(
+              width: size.width,
+              height: size.height * 0.8,
+              child: ValueListenableBuilder(
+                valueListenable: selectedList,
+                builder: (context, value, child) => ListView.builder(
+                  itemCount: value.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(title: Text(value[index]));
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
